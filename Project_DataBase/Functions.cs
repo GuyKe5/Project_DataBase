@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -9,7 +10,8 @@ namespace Project_DataBase
 {
     public class Functions
     {
-        public static string DataTableToJSON(DataTable table)
+  
+           public static string DataTableToJSON(DataTable table)
         {
             StringBuilder jsonBuilder = new StringBuilder();
             jsonBuilder.Append("[");
