@@ -13,7 +13,7 @@ builder.Services.AddCors(options =>
     var frontendURL = configiration.GetValue<string>("frontend_url");
     options.AddDefaultPolicy(builder =>
     {
-        builder.WithOrigins(frontendURL).AllowAnyOrigin().AllowAnyMethod();
+        builder.WithOrigins(frontendURL).AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
     });
 });
 var app = builder.Build();

@@ -17,7 +17,7 @@ namespace Project_DataBase.BLL
             DataTable data = UserServiceDAL.GetUserDataDAL(username,password);
             if (data == null || data.Rows.Count == 0)// check if login incorrect
             {
-                return "details wrong";
+                return null;
             }
            User user = new User(data);
             return Functions.DataTableToJSON(data);
