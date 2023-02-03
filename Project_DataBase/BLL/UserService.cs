@@ -12,15 +12,16 @@ namespace Project_DataBase.BLL
     public class UserService
     { 
 
-        public static string GetUserDataBLL(string username,string password)
+        public static User GetUserDataBLL(string username,string password)
         {
             DataTable data = UserServiceDAL.GetUserDataDAL(username,password);
+            
             if (data == null || data.Rows.Count == 0)// check if login incorrect
             {
                 return null;
             }
-           User user = new User(data);
-            return Functions.DataTableToJSON(data);
+            User user = Functions.MapDataTableToClass<User>(data);
+            return user;
         }
 
         //Update
