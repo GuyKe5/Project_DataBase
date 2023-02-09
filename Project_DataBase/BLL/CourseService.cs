@@ -22,11 +22,22 @@ namespace Project_DataBase.BLL
             return courses;
 
         }
-        public static List<Question> GetQuestionsFromCourseIdBLL(int id)
+        public static List<Question> GetQuestionsFromCourseIdBLL(int courseId,int userId)
         {
-            DataTable QuestionDT = CourseServiceDAL.GetQuestionsFromCourseIdDLL(id);
+            DataTable QuestionDT = CourseServiceDAL.GetQuestionsFromCourseIdDLL(courseId);
+            List<Question> QuestionList = Functions.MapDataTableToListOfClass<Question>(QuestionDT);
+            List<int> QuestionIds = new List<int>();
+            for(int i=0; i < QuestionList.Count;i++)
+            {
+                QuestionIds.Add(QuestionList[i].id);
+            }
 
-            return Functions.MapDataTableToListOfClass<Question>(QuestionDT);
+            for (int i = 0; i < QuestionIds.Count; i++)
+            {
+                QuestionList[i].status = CourseServiceDAL.GetQuestionStatus(QuestionIds[i],userId);
+
+            }
+            return QuestionList; 
         }
 
         public static int[] GetCoursesIdsThatUserEnrolled(int id)
@@ -37,6 +48,14 @@ namespace Project_DataBase.BLL
 
         }
 
-       
+        public static FullQuestion GetFullQuestionFromQuestionIdBLL(int id)
+        {
+            DataTable d = CourseServiceDAL.GetFullQuestionFromQuestionIdDLL(id);
+            FullQuestion q = Functions.MapDataTableToClass<FullQuestion>(d);
+            return q;
+        }
+
+
+
     }
 }

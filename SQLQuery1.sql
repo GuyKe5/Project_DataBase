@@ -1,1 +1,1 @@
-﻿
+﻿select * from Questions where id=1

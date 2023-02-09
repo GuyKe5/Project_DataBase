@@ -10,8 +10,17 @@ namespace Project_DataBase.Classes
         public int id { get; set; }
         public string name { get; set; }
         public string description { get; set; }
-     //   public User auther { get; set; }
+        public string status { get; set; }
+        //   public User auther { get; set; }
         //public Test[] tests{ get; set; }
     }
+
+    public class FullQuestion :Question
+    {
+        public string prompt { get; set; }
+        public string solution { get; set; }
+        public string savedWork{ get; set; }
+    }
+
 
 }

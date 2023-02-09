@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using Project_DataBase.BLL;
 using System.Text.Json.Nodes;
 using Project_DataBase.BLL;
+using Project_DataBase.Classes;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -29,17 +30,33 @@ namespace Project_DataBase.web_service
         }
 
         [HttpGet("GetQuestionsFromCourseId")]
-        public IActionResult GetQuestionsFromCourseId(int id)
+        public IActionResult GetQuestionsFromCourseId(int courseId,int userId)
         {
             try
             {
-                return Ok(CourseService.GetQuestionsFromCourseIdBLL(id));
+                return Ok(CourseService.GetQuestionsFromCourseIdBLL(courseId,userId));
 
 
             }
             catch (Exception ex)
             {
                 return StatusCode(500, new { error = "An unexpected error occurred. :("  });
+            }
+        }
+
+        [HttpGet("GetFullQuestionFromQuestionId")]
+
+        public IActionResult GetFullQuestionFromQuestionId(int qId)
+        {
+            try
+            {
+                return Ok(CourseService.GetFullQuestionFromQuestionIdBLL(qId));
+
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = "An unexpected error occurred. :(" });
             }
         }
 
