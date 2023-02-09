@@ -11,6 +11,7 @@ namespace Project_DataBase.Classes
         public string name { get; set; }
         public string description { get; set; }
         public string status { get; set; }
+        public int course_id { get; set; }
         //   public User auther { get; set; }
         //public Test[] tests{ get; set; }
     }
@@ -20,6 +21,7 @@ namespace Project_DataBase.Classes
         public string prompt { get; set; }
         public string solution { get; set; }
         public string savedWork{ get; set; }
+        public string baseCode { get; set; }
     }
 
 
