@@ -1,1 +1,2 @@
-﻿select * from Questions where id=1
+﻿INSERT INTO Users (username, password, email) 
+VALUES (value1, value2, value3);

@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Web;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 
 namespace Project_DataBase.BLL
 {
@@ -24,8 +26,11 @@ namespace Project_DataBase.BLL
             return user;
         }
 
-        //Update
+        public static string Register(JsonElement json)
+        {
+            return UserServiceDAL.Register(json);
 
-        //delete
+        }
+
     }
 }

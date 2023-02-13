@@ -15,7 +15,8 @@ public class SQLHelper
     /// <summary>
     /// Connection string
     /// </summary>
-    public static string connectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\Guy\\Desktop\\SchoolProject\\Project_DataBase\\Project_DataBase\\App_Data\\Database1.mdf;Integrated Security=True";// ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+    public static string connectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\soft\\source\\repos\\GuyKe5\\Project_DataBase\\Project_DataBase\\App_Data\\Database1.mdf;Integrated Security = True";
+// "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\Guy\\Desktop\\SchoolProject\\Project_DataBase\\Project_DataBase\\App_Data\\Database1.mdf;Integrated Security=True";// ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
     #endregion
 
     #region Public Static Methods

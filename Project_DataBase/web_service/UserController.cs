@@ -45,5 +45,20 @@ namespace Project_DataBase.web_service
             }
         }
 
+        [HttpPut("Register")]
+        public IActionResult Register([FromBody] JsonElement value)
+        {
+            string response = UserService.Register(value);
+            if (response == "ok")
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest(response);
+            }
+
+        } 
+
     }
 }
