@@ -55,7 +55,7 @@ namespace Project_DataBase.web_service
             }
             else
             {
-                return BadRequest(response);
+                return StatusCode(500, new { error = response });
             }
 
         } 

@@ -36,7 +36,8 @@ namespace Project_DataBase.DAL
                 DataTable check = SQLHelper.SelectData(checkQuery);
                 if(check.Rows.Count==0)
                 {
-                    string query = $"INSERT INTO Users (username, password, email) VALUES ({username}, {password}, {email})";
+                   
+                    string query = $"INSERT INTO Users (username, password, email) VALUES ('{username}',' {password}', '{email}')";
                   affected= SQLHelper.DoQuery(query);
 
                 }
