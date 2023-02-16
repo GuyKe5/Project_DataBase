@@ -53,8 +53,13 @@ namespace Project_DataBase.web_service
             {
                 return Ok();
             }
+            if(response== "username already taken")
+            {
+                return NotFound(new { error = "Username taken." });
+            }
             else
             {
+
                 return StatusCode(500, new { error = response });
             }
 
