@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using System.Runtime.InteropServices;
 
 namespace Project_DataBase.DAL
 {
@@ -39,6 +40,13 @@ namespace Project_DataBase.DAL
             string query = $"select * from Questions where id={id}";
             DataTable t = SQLHelper.SelectData(query);
             return t;
+        }
+
+        public static int AddCourseDLL(string name,string description,string date)
+        {
+            string query = $"INSERT INTO Courses(name,description,date) VALUES ('{name}',' {description}', '{date}')";
+            int affected = SQLHelper.DoQuery(query);
+            return affected;
         }
     }
 }

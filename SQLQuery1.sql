@@ -1,1 +1,1 @@
-﻿INSERT INTO Users (username, password, email) VALUES (yosi, 123, dfd)
+﻿INSERT INTO Courses(name,description,date) VALUES ('S','a ', '2022-02-15')
