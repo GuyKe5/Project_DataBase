@@ -81,5 +81,19 @@ namespace Project_DataBase.web_service
             }
         }
 
+        [HttpGet("GetCourseDataByWriterId")]
+
+        public IActionResult GetCourseDataByWriterId(int writerId)
+        {
+            try
+            {
+                return Ok(CourseService.GetCourseDataByWriterIdBLL(writerId));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = "An unexpected error occurred. :(" });
+            }
+        }
+
     }
 }

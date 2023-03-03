@@ -48,5 +48,12 @@ namespace Project_DataBase.DAL
             int affected = SQLHelper.DoQuery(query);
             return affected;
         }
+
+        public static DataTable GetCourseDataByWriterIdDLL(int writerId)
+        {
+            string query = $"select * from Courses where writer={writerId}";
+            DataTable t = SQLHelper.SelectData(query);
+            return t;
+        }
     }
 }

@@ -41,6 +41,7 @@ namespace Project_DataBase
                 foreach (DataColumn column in dataTable.Columns)
                 {
                     PropertyInfo property = obj.GetType().GetProperty(column.ColumnName);
+                    System.Diagnostics.Debug.WriteLine($"property: {property} Type:{obj.GetType()}" );
                     if (property != null && row[column] != DBNull.Value)
                     {
                         property.SetValue(obj, row[column]);

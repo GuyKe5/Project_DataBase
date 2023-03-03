@@ -74,6 +74,13 @@ namespace Project_DataBase.BLL
         }
 
 
+        public static List<Course>GetCourseDataByWriterIdBLL(int writerId)
+        {
+            DataTable CourseDT = CourseServiceDAL.GetCourseDataByWriterIdDLL(writerId);
+            List<Course> CourseList = Functions.MapDataTableToListOfClass<Course>(CourseDT);
+            return CourseList;
+        }
+
 
 
     }
