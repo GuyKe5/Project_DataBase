@@ -16,8 +16,8 @@ public class SQLHelper
     /// Connection string
 
     /// </summary>
-    public static string connectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\STUDENT\\source\\repos\\Project_DataBase\\Project_DataBase\\App_Data\\Database1.mdf;Integrated Security=True";   //pc in lab 4
-    //public static string connectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\Guy\\Desktop\\SchoolProject\\Project_DataBase\\Project_DataBase\\App_Data\\Database1.mdf;Integrated Security=True";
+   // public static string connectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\STUDENT\\source\\repos\\Project_DataBase\\Project_DataBase\\App_Data\\Database1.mdf;Integrated Security=True";   //pc in lab 4
+    public static string connectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\Guy\\Desktop\\SchoolProject\\Project_DataBase\\Project_DataBase\\App_Data\\Database1.mdf;Integrated Security=True";
     // public static string connectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\soft\\source\\repos\\GuyKe5\\Project_DataBase\\Project_DataBase\\App_Data\\Database1.mdf;Integrated Security = True";
     // "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\Guy\\Desktop\\SchoolProject\\Project_DataBase\\Project_DataBase\\App_Data\\Database1.mdf;Integrated Security=True";// ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
     #endregion

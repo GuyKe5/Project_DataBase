@@ -81,6 +81,25 @@ namespace Project_DataBase.web_service
             }
         }
 
+        [HttpPut("AddQuestion")]
+        public IActionResult AddQuestion([FromBody] JsonElement value)
+        {
+
+            try
+            {
+                string response = CourseService.AddQuestion(value);
+                if (response == "ok") { return Ok(); }
+                return StatusCode(500, new { error = response });
+
+
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = "An unexpected error occurred. :(" });
+            }
+        }
+
         [HttpGet("GetCourseDataByWriterId")]
 
         public IActionResult GetCourseDataByWriterId(int writerId)

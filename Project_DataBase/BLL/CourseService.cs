@@ -73,6 +73,23 @@ namespace Project_DataBase.BLL
 
         }
 
+        public static string AddQuestion(JsonElement value)
+        {
+            dynamic obj = JsonNode.Parse(value.GetRawText());
+            string name = (string)obj["questionname"];
+            string description = (string)obj["description"];
+             int writer = (int)obj["writerId"];
+            int courseId = (int)obj["courseId"];
+                       int affected = CourseServiceDAL.AddQuestionDLL(name, description,writer, courseId);
+            if (affected > 0)
+            {
+                return "ok";
+            }
+
+
+            return "error";
+
+        }
 
         public static List<Course>GetCourseDataByWriterIdBLL(int writerId)
         {

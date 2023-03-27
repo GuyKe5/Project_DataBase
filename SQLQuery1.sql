@@ -1,1 +1,1 @@
-﻿select * from Courses where writer=1
+﻿INSERT INTO Questions(name,description,writer,course_id) VALUES ('a',' b','1','1')

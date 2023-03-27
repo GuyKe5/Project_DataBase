@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using Project_DataBase.Classes;
+using System.Data;
 using System.Runtime.InteropServices;
 
 namespace Project_DataBase.DAL
@@ -49,11 +50,20 @@ namespace Project_DataBase.DAL
             return affected;
         }
 
+        public static int AddQuestionDLL(string name, string description, int writer, int courseId)
+        {
+            string query = $"INSERT INTO Questions(name,description,writer,course_id) VALUES ('{name}',' {description}','{writer}','{courseId}')";
+            int affected = SQLHelper.DoQuery(query);
+            return affected;
+        }
+
         public static DataTable GetCourseDataByWriterIdDLL(int writerId)
         {
             string query = $"select * from Courses where writer={writerId}";
             DataTable t = SQLHelper.SelectData(query);
             return t;
         }
+
+
     }
 }
