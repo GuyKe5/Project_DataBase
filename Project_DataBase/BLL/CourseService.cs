@@ -59,28 +59,10 @@ namespace Project_DataBase.BLL
         {
             dynamic obj = JsonNode.Parse(value.GetRawText());
             string name = (string)obj["name"];
-            string description= (string)obj["description"];
+            string description = (string)obj["description"];
             // int writer = (string)obj["writer"];
             string dt = DateTime.Now.ToString("yyyy-MM-dd");
-            int affected= CourseServiceDAL.AddCourseDLL(name,description, dt);
-            if(affected>0)
-            {
-                return "ok";
-            }
-
-
-            return "error";
-
-        }
-
-        public static string AddQuestion(JsonElement value)
-        {
-            dynamic obj = JsonNode.Parse(value.GetRawText());
-            string name = (string)obj["questionname"];
-            string description = (string)obj["description"];
-             int writer = (int)obj["writerId"];
-            int courseId = (int)obj["courseId"];
-                       int affected = CourseServiceDAL.AddQuestionDLL(name, description,writer, courseId);
+            int affected = CourseServiceDAL.AddCourseDLL(name, description, dt);
             if (affected > 0)
             {
                 return "ok";
@@ -91,7 +73,9 @@ namespace Project_DataBase.BLL
 
         }
 
-        public static List<Course>GetCourseDataByWriterIdBLL(int writerId)
+      
+
+        public static List<Course> GetCourseDataByWriterIdBLL(int writerId)
         {
             DataTable CourseDT = CourseServiceDAL.GetCourseDataByWriterIdDLL(writerId);
             List<Course> CourseList = Functions.MapDataTableToListOfClass<Course>(CourseDT);

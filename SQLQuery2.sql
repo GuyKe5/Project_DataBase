@@ -1,1 +1,1 @@
-﻿select * from Courses where writer=1
+﻿INSERT INTO Tests(name,input,output,questionId) VALUES ('1',' 1','11', '33')
