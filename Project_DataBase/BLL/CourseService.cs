@@ -8,6 +8,16 @@ namespace Project_DataBase.BLL
 {
     public class CourseService
     {
+
+        public static string Enroll(int userId,int CourseId)
+        {
+              return CourseServiceDAL.Enroll(userId,CourseId);
+        }
+        public static bool CheckIfEnrolled(int UserId,int CourseId)
+        {
+            bool d = CourseServiceDAL.CheckIfEnrolledDLL(UserId,CourseId);
+            return d;
+        }
         public static List<Course> GetEnrolledCoursesByIdBLL(int id)
         {
             List<Course> courses = new List<Course>();
@@ -23,6 +33,20 @@ namespace Project_DataBase.BLL
             return courses;
 
         }
+
+        public static List<Course> GetAllCourses()
+        {
+
+                DataTable courseDT = CourseServiceDAL.GetAllCourses();
+                List<Course> courses = Functions.MapDataTableToListOfClass<Course>(courseDT);
+                return courses;
+
+        }
+
+         
+
+        
+
         public static List<Question> GetQuestionsFromCourseIdBLL(int courseId, int userId)
         {
             DataTable QuestionDT = CourseServiceDAL.GetQuestionsFromCourseIdDLL(courseId);

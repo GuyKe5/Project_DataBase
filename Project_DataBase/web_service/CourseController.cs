@@ -31,6 +31,41 @@ namespace Project_DataBase.web_service
             }
         }
 
+        
+
+            [HttpGet("CheckIfEnrolled")]
+        public IActionResult CheckIfEnrolled(int UserId,int CourseId)
+        {
+            try
+            {
+                bool result = CourseService.CheckIfEnrolled(UserId,CourseId);
+                if(result == true) { return Ok(); }
+                else {  return StatusCode(404, new { error = "User is not enrolled to this course" }); }
+                           
+
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = "An unexpected error occurred. :(" });
+            }
+        }
+
+        [HttpGet("GetAllCourses")]
+        public IActionResult GetAllCourses()
+        {
+            try
+            {
+                return Ok(CourseService.GetAllCourses());
+
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = "An unexpected error occurred. :(" });
+            }
+        }
+
         [HttpGet("GetQuestionsFromCourseId")]
         public IActionResult GetQuestionsFromCourseId(int courseId, int userId)
         {
@@ -81,7 +116,26 @@ namespace Project_DataBase.web_service
             }
         }
 
-     
+        [HttpPut("Enroll")]
+        public IActionResult Enroll(int userId,int courseId)
+        {
+
+            try
+            {
+                string response = CourseService.Enroll(userId,courseId);
+                if (response == "ok") { return Ok(); }
+                return StatusCode(500, new { error = response });
+
+
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = "An unexpected error occurred. :(" });
+            }
+        }
+
+
 
         [HttpGet("GetCourseDataByWriterId")]
 

@@ -1,4 +1,5 @@
 ﻿using Project_DataBase.Classes;
+using System.Collections.Generic;
 using System.Data;
 using System.Runtime.InteropServices;
 
@@ -6,9 +7,36 @@ namespace Project_DataBase.DAL
 {
     public class CourseServiceDAL
     {
+
+        public static string Enroll(int userId,int CourseId)
+        {
+              string query = $"INSERT INTO Enrollments(user_id,course_id) VALUES ('{userId}','{CourseId}')";
+            int affected = SQLHelper.DoQuery(query);
+            if (affected == 1)
+                return "ok";
+            else
+                return "Error";
+        }
+        public static bool CheckIfEnrolledDLL(int UserId,int CourseId)
+        {
+            string query=$"select * from Enrollments where user_id={UserId} and course_id={CourseId}";
+            DataTable t = SQLHelper.SelectData(query);
+            if (t.Rows.Count == 0)
+                return false;
+            else
+                return true;
+        }
         public static DataTable GetCoursesIdsThatUserEnrolledDAL(int id)
         {
             string query = $"select course_id from Enrollments where user_id={id}";
+            DataTable t = SQLHelper.SelectData(query);
+            return t;
+        }
+
+
+        public static DataTable GetAllCourses()
+        {
+            string query = $"select * from Courses";
             DataTable t = SQLHelper.SelectData(query);
             return t;
         }
@@ -50,11 +78,33 @@ namespace Project_DataBase.DAL
             return affected;
         }
 
-        public static int AddQuestionDLL(string name, string description, int writer, int courseId,string baseCode)
+        public static int AddQuestionDLL(string name, string description, int writer, int courseId, string baseCode,string solution, int edit)
         {
-            string query = $@"INSERT INTO Questions (name, description, writer, course_id,baseCode)
+            string query;
+            if (edit>0)
+            {
+                query = $@"UPDATE Questions
+           SET name = '{name}',
+               description = '{description}',
+               writer = '{writer}',
+               course_id = '{courseId}',
+               baseCode = '{baseCode}',
+               solution = '{solution}'
+           WHERE id = '{edit}'";
+                int sql = SQLHelper.DoQuery(query);
+                if (sql > 0) { return edit; }
+                
+                
+                    return -1;
+                
+
+            }
+            else
+            {
+                query = $@"INSERT INTO Questions (name, description, writer, course_id,baseCode,solution)
                      OUTPUT INSERTED.id
- VALUES ('{name}', '{description}', '{writer}', '{courseId}','{baseCode}')";
+ VALUES ('{name}', '{description}', '{writer}', '{courseId}','{baseCode}','{solution}')";
+            }
             object questionIdObj = SQLHelper.SelectScalar(query);
             if (questionIdObj != null && questionIdObj != DBNull.Value)
             {

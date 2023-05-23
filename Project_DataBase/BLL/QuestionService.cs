@@ -47,10 +47,12 @@ namespace Project_DataBase.BLL
         {
             string name = value.GetProperty("questionname").GetString();
             string description = value.GetProperty("description").GetString();
-            string baesCode = value.GetProperty("baesCode").GetString();
+            string baesCode = value.GetProperty("baseCode").GetString();
+            string solution = value.GetProperty("soulutionCode").GetString();
             int writer = value.GetProperty("writerId").GetInt32();
             int courseId = value.GetProperty("courseId").GetInt32();
-            int questionId = CourseServiceDAL.AddQuestionDLL(name, description, writer, courseId, baesCode);
+            int edit = value.GetProperty("edit").GetInt32();
+            int questionId = CourseServiceDAL.AddQuestionDLL(name, description, writer, courseId, baesCode, solution, edit);
 
             if (questionId > 0)
             {
