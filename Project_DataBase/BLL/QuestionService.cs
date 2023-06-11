@@ -3,44 +3,26 @@ using System.Data;
 using Project_DataBase.DAL;
 using System.Text.Json.Nodes;
 using System.Text.Json;
+using Microsoft.CodeAnalysis.CSharp.Scripting;
+using Microsoft.CodeAnalysis.Scripting;
+using Microsoft.AspNetCore.Razor.TagHelpers;
+
 namespace Project_DataBase.BLL
 {
     public class QuestionService
     {
-        public static List<Test> GetTestFromQuestionId(int id) {
+        public static List<Test> GetTestFromQuestionId(int id)
+        {
 
             DataTable TestDT = QuestionServiceDAL.GetTestFromQuestionId(id);
             List<Test> TestList = Functions.MapDataTableToListOfClass<Test>(TestDT);
-                       return TestList;
+            return TestList;
         }
-        public static List<Test> SubmitAndCheckCode(JsonElement value)
+        public static FullQuestion GetFullQuestionFromQuestionIdBLL(int id)
         {
-            dynamic obj = JsonNode.Parse(value.GetRawText());
-            string code = (string)obj["code"];
-            var tests = new List<Test>();
-            if (value.TryGetProperty("tests", out JsonElement testsElement) && testsElement.ValueKind == JsonValueKind.Array)
-            {
-                foreach (JsonElement testElement in testsElement.EnumerateArray())
-                {
-                    Test test = new Test
-                    {
-
-                        id= testElement.GetProperty("id").GetInt32(),
-                        name = testElement.GetProperty("name").GetString(),
-                        input = testElement.GetProperty("input").GetString(),
-                        output = testElement.GetProperty("output").GetString(),
-                    };
-                    tests.Add(test);
-                }
-            }
-
-            //hard coded to check
-            for (int i = 0; i < tests.Count; i++)
-            {
-                tests[i].status = "V";
-            }
-            return tests;
-
+            DataTable d = CourseServiceDAL.GetFullQuestionFromQuestionIdDLL(id);
+            FullQuestion q = Functions.MapDataTableToClass<FullQuestion>(d);
+            return q;
         }
 
         public static string AddQuestion(JsonElement value)
@@ -101,6 +83,96 @@ namespace Project_DataBase.BLL
             }
             return true;
         }
+
+        public static List<Test> SubmitAndCheckCode(JsonElement value)
+        {
+            dynamic obj = JsonNode.Parse(value.GetRawText());
+            string code = (string)obj["code"];  // student code
+            var tests = new List<Test>();
+
+            if (value.TryGetProperty("tests", out JsonElement testsElement) && testsElement.ValueKind == JsonValueKind.Array)
+            {
+                foreach (JsonElement testElement in testsElement.EnumerateArray())
+                {
+                    Test test = new Test
+                    {
+                        id = testElement.GetProperty("id").GetInt32(),
+                        name = testElement.GetProperty("name").GetString(),
+                        input = testElement.GetProperty("input").GetString(),
+                        output = testElement.GetProperty("output").GetString(),
+                    };
+                    tests.Add(test);
+                }
+            }
+
+            for (int i = 0; i < tests.Count; i++)
+            {
+                Test test = tests[i];
+
+                // Execute the test using the student's code
+                string result = ExecuteTestWithConsoleReadLine(code, test.input);
+
+                test.status = (result == test.output) ? "V" : "X";
+            }
+
+            return tests;
+        }
+
+        public static string ExecuteTestWithConsoleReadLine(string code, string input)
+        {
+            string addLineToTest = $"Console.SetIn(new System.IO.StringReader(\"{input}\"));";
+
+            // Find the index of the opening curly brace '{' after the method declaration
+            int openingBraceIndex = code.IndexOf("Main") + 13;
+
+            // Insert the new line at the calculated index
+            string modifiedCode = code.Insert(openingBraceIndex, addLineToTest + "\n");
+
+            string scriptCode = modifiedCode;
+
+            try
+            {
+                using (var consoleOutput = new StringWriter())
+                {
+                    var originalIn = Console.In;
+                    var originalOut = Console.Out;
+
+                    try
+                    {
+                        var inputReader = new StringReader(input);
+                        Console.SetIn(inputReader);
+                        Console.SetOut(consoleOutput);
+
+                        var scriptOptions = ScriptOptions.Default
+                            .AddReferences(typeof(Console).Assembly)
+                            .AddImports("System");
+
+                        var script = CSharpScript.Create(scriptCode, scriptOptions);
+                        script.RunAsync().Wait();
+
+                        string output = consoleOutput.ToString();
+
+                        return output;
+                    }
+                    finally
+                    {
+                        Console.SetIn(originalIn);
+                        Console.SetOut(originalOut);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                return e.Message;
+            }
+        }
+
+
+
+
+
+
+
 
     }
 }

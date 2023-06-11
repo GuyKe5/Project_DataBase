@@ -14,6 +14,8 @@ namespace Project_DataBase.Classes
         public string username { get; set; }
         public string password { get; set; }
         public string email { get; set; }
+        public bool isAdmin { get; set; }
+    
 
         public User(string username, string password, string email)
         {

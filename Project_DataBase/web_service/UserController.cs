@@ -12,8 +12,7 @@ namespace Project_DataBase.web_service
     [ApiController]
     public class UserController : ControllerBase
     {
-        // GET: api/<ValuesController>
-               [HttpPost("GetUserData")]
+        [HttpPost("GetUserData")]
         public IActionResult GetUserData([FromBody] JsonElement value)
         {
             try
@@ -40,7 +39,6 @@ namespace Project_DataBase.web_service
             }
             catch (Exception ex)
             {
-                // Log the error and return a 500 Internal Server Error
                 return StatusCode(500, new { error = "An unexpected error occurred. :(" });
             }
         }
@@ -53,7 +51,7 @@ namespace Project_DataBase.web_service
             {
                 return Ok();
             }
-            if(response== "username already taken")
+            if (response == "username already taken")
             {
                 return NotFound(new { error = "Username taken." });
             }
@@ -63,7 +61,7 @@ namespace Project_DataBase.web_service
                 return StatusCode(500, new { error = response });
             }
 
-        } 
+        }
 
     }
 }

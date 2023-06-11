@@ -9,13 +9,13 @@ namespace Project_DataBase.BLL
     public class CourseService
     {
 
-        public static string Enroll(int userId,int CourseId)
+        public static string Enroll(int userId, int CourseId)
         {
-              return CourseServiceDAL.Enroll(userId,CourseId);
+            return CourseServiceDAL.Enroll(userId, CourseId);
         }
-        public static bool CheckIfEnrolled(int UserId,int CourseId)
+        public static bool CheckIfEnrolled(int UserId, int CourseId)
         {
-            bool d = CourseServiceDAL.CheckIfEnrolledDLL(UserId,CourseId);
+            bool d = CourseServiceDAL.CheckIfEnrolledDLL(UserId, CourseId);
             return d;
         }
         public static List<Course> GetEnrolledCoursesByIdBLL(int id)
@@ -33,20 +33,14 @@ namespace Project_DataBase.BLL
             return courses;
 
         }
-
         public static List<Course> GetAllCourses()
         {
 
-                DataTable courseDT = CourseServiceDAL.GetAllCourses();
-                List<Course> courses = Functions.MapDataTableToListOfClass<Course>(courseDT);
-                return courses;
+            DataTable courseDT = CourseServiceDAL.GetAllCourses();
+            List<Course> courses = Functions.MapDataTableToListOfClass<Course>(courseDT);
+            return courses;
 
         }
-
-         
-
-        
-
         public static List<Question> GetQuestionsFromCourseIdBLL(int courseId, int userId)
         {
             DataTable QuestionDT = CourseServiceDAL.GetQuestionsFromCourseIdDLL(courseId);
@@ -64,20 +58,12 @@ namespace Project_DataBase.BLL
             }
             return QuestionList;
         }
-
         public static int[] GetCoursesIdsThatUserEnrolled(int id)
         {
             DataTable d = CourseServiceDAL.GetCoursesIdsThatUserEnrolledDAL(id);
             int[] array = d.Rows.OfType<DataRow>().Select(k => int.Parse(k[0].ToString())).ToArray();
             return array;
 
-        }
-
-        public static FullQuestion GetFullQuestionFromQuestionIdBLL(int id)
-        {
-            DataTable d = CourseServiceDAL.GetFullQuestionFromQuestionIdDLL(id);
-            FullQuestion q = Functions.MapDataTableToClass<FullQuestion>(d);
-            return q;
         }
         public static string AddCourse(JsonElement value)
         {
@@ -96,9 +82,6 @@ namespace Project_DataBase.BLL
             return "error";
 
         }
-
-      
-
         public static List<Course> GetCourseDataByWriterIdBLL(int writerId)
         {
             DataTable CourseDT = CourseServiceDAL.GetCourseDataByWriterIdDLL(writerId);

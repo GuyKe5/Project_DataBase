@@ -8,4 +8,11 @@
         public int id { get; set; }
         public int writer { get; set; }
     }
+
+    public class PaidCourse : Course
+    {
+        public double price { get; set; }
+        public double discount { get; set; }
+    }
+
 }

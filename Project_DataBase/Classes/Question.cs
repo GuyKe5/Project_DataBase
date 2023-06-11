@@ -12,8 +12,6 @@ namespace Project_DataBase.Classes
         public string description { get; set; }
         public string status { get; set; }
         public int course_id { get; set; }
-        //   public User auther { get; set; }
-        //public Test[] tests{ get; set; }
     }
 
     public class FullQuestion : Question
