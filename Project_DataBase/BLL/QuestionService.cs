@@ -108,7 +108,7 @@ namespace Project_DataBase.BLL
             return true;
         }
 
-        public static List<Test> SubmitAndCheckCode(JsonElement value)
+        public  static async Task<List<Test>> SubmitAndCheckCode(JsonElement value)
         {
             dynamic obj = JsonNode.Parse(value.GetRawText());
             string code = (string)obj["code"];  // student code
@@ -134,7 +134,7 @@ namespace Project_DataBase.BLL
                 Test test = tests[i];
 
                 // Execute the test using the student's code
-                string result = ExecuteTestWithConsoleReadLine(code, test.input);
+                string result = await ExecuteTestWithConsoleReadLine(code, test.input);
 
                 test.status = (result == test.output) ? "V" : "X";
             }
@@ -142,7 +142,7 @@ namespace Project_DataBase.BLL
             return tests;
         }
 
-        public static string ExecuteTestWithConsoleReadLine(string studentCode, string input)
+        public static async Task<string> ExecuteTestWithConsoleReadLine(string studentCode, string input)
         {
             string code = $@"string input =""{input}"";
 string userInput;
@@ -172,7 +172,7 @@ using (StringReader sr = new StringReader(input))
 
 return consoleOutput;";
 
-            string result = ExecuteCodeAsync(code).GetAwaiter().GetResult();
+            string result = await ExecuteCodeAsync(code);
             return result;
         }
 

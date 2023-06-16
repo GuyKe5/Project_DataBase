@@ -48,11 +48,11 @@ namespace Project_DataBase.web_service
         }
 
         [HttpPost("SubmitAndCheckCode")]
-        public IActionResult SubmitAndCheckCode([FromBody]JsonElement value) // להריץ את הבדיקות על הקוד להחזיר את הבדיקות עם סטטוס עבר או לא עבר
+        public async Task<IActionResult> SubmitAndCheckCode([FromBody]JsonElement value) // להריץ את הבדיקות על הקוד להחזיר את הבדיקות עם סטטוס עבר או לא עבר
         {
             try
             {
-               List<Test> response = QuestionService.SubmitAndCheckCode(value);
+               List<Test> response = await QuestionService.SubmitAndCheckCode(value);
                 return Ok(response);
 
 
