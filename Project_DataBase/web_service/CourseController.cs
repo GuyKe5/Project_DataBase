@@ -151,5 +151,21 @@ namespace Project_DataBase.web_service
             }
         }
 
+        //delete course
+        [HttpDelete("DeleteCourse")]
+        public IActionResult DeleteCourse(int courseId)
+        {
+            try
+            {
+                string response = CourseService.DeleteCourse(courseId);
+                if (response == "ok") { return Ok(); }
+                return StatusCode(500, new { error = response });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = "An unexpected error occurred. :(" });
+            }
+        }
+
     }
 }

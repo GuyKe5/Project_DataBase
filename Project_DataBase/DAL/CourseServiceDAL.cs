@@ -7,7 +7,13 @@ namespace Project_DataBase.DAL
 {
     public class CourseServiceDAL
     {
-
+        //delete course
+        public static int DeleteCourse(int id)
+        {
+            string query = $"DELETE FROM Courses WHERE id={id}";
+            int affected = SQLHelper.DoQuery(query);
+            return affected;   
+        }
         public static string Enroll(int userId,int CourseId)
         {
               string query = $"INSERT INTO Enrollments(user_id,course_id) VALUES ('{userId}','{CourseId}')";
@@ -71,9 +77,10 @@ namespace Project_DataBase.DAL
             return t;
         }
 
-        public static int AddCourseDLL(string name, string description, string date)
+        public static int AddCourseDLL(string name, string description, string date,int writer)
         {
-            string query = $"INSERT INTO Courses(name,description,date) VALUES ('{name}',' {description}', '{date}')";
+            string query = $"INSERT INTO Courses(name,description,date,writer) VALUES ('{name}',' {description}', '{date}','{writer}'" +
+                $")";
             int affected = SQLHelper.DoQuery(query);
             return affected;
         }
@@ -126,7 +133,9 @@ namespace Project_DataBase.DAL
 
         public static DataTable GetCourseDataByWriterIdDLL(int writerId)
         {
-            string query = $"select * from Courses where writer={writerId}";
+            //string query = $"select * from Courses where writer={writerId}";
+            string query = $"exec GetCourseEnrollmentCount {writerId}";
+
             DataTable t = SQLHelper.SelectData(query);
             return t;
         }

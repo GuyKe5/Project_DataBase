@@ -7,6 +7,7 @@
         public string date{ get; set; }
         public int id { get; set; }
         public int writer { get; set; }
+        public int enrolled { get; set; }
     }
 
     public class PaidCourse : Course

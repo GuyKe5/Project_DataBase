@@ -70,9 +70,9 @@ namespace Project_DataBase.BLL
             dynamic obj = JsonNode.Parse(value.GetRawText());
             string name = (string)obj["name"];
             string description = (string)obj["description"];
-            // int writer = (string)obj["writer"];
+             int writer = (int)obj["writer"];
             string dt = DateTime.Now.ToString("yyyy-MM-dd");
-            int affected = CourseServiceDAL.AddCourseDLL(name, description, dt);
+            int affected = CourseServiceDAL.AddCourseDLL(name, description, dt,writer);
             if (affected > 0)
             {
                 return "ok";
@@ -88,7 +88,17 @@ namespace Project_DataBase.BLL
             List<Course> CourseList = Functions.MapDataTableToListOfClass<Course>(CourseDT);
             return CourseList;
         }
-
+    
+        //Delete Course
+        public static string DeleteCourse(int id)
+        {
+            int affected = CourseServiceDAL.DeleteCourse(id);
+            if (affected > 0)
+            {
+                return "ok";
+            }
+            return "error";
+        }
 
 
     }

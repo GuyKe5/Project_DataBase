@@ -12,6 +12,27 @@ namespace Project_DataBase.web_service
     [ApiController]
     public class UserController : ControllerBase
     {
+        //Get all users
+        [HttpGet("GetAllUsers")]
+        public IActionResult GetAllUsers()
+        {
+            try
+            {
+                // Get all users
+                List<User> users = UserService.GetAllUsersBLL();
+                if (users == null)
+                {
+                    return NotFound(new { error = "No users found." });
+                }
+
+                // Return the users
+                return Ok(users);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = "An unexpected error occurred. :(" });
+            }
+        }
         [HttpPost("GetUserData")]
         public IActionResult GetUserData([FromBody] JsonElement value)
         {
@@ -54,6 +75,15 @@ namespace Project_DataBase.web_service
             if (response == "username already taken")
             {
                 return NotFound(new { error = "Username taken." });
+            }
+            else if (response == "Invalid email")
+            {
+                // return 403  error
+                return StatusCode(403, new { error = "Invalid email." });
+            }
+            else if (response == "Error during email validation")
+            {
+                return StatusCode(500, new { error = "Error during email validation." });
             }
             else
             {

@@ -6,11 +6,35 @@ using System.Text.Json;
 using Microsoft.CodeAnalysis.CSharp.Scripting;
 using Microsoft.CodeAnalysis.Scripting;
 using Microsoft.AspNetCore.Razor.TagHelpers;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.Emit;
+using Microsoft.CodeAnalysis;
+using System.Reflection;
+using Microsoft.CodeDom.Providers.DotNetCompilerPlatform;
+using System.CodeDom.Compiler;
+using System.Text;
 
 namespace Project_DataBase.BLL
 {
     public class QuestionService
     {
+        public static string ChangeStatus(JsonElement value)
+        {
+            int user_id = value.GetProperty("user_id").GetInt32();
+            int question_id = int.Parse(value.GetProperty("question_id").ToString());
+            string status = value.GetProperty("status").ToString();
+
+
+            int affected = QuestionServiceDAL.ChangeStatusDLL(user_id, status, question_id);
+            if (affected > 0)
+            {
+                return ("ok");
+            }
+            else
+            {
+                return ("error in the query");
+            }
+        }
         public static List<Test> GetTestFromQuestionId(int id)
         {
 
@@ -118,61 +142,60 @@ namespace Project_DataBase.BLL
             return tests;
         }
 
-        public static string ExecuteTestWithConsoleReadLine(string code, string input)
+        public static string ExecuteTestWithConsoleReadLine(string studentCode, string input)
         {
-            string addLineToTest = $"Console.SetIn(new System.IO.StringReader(\"{input}\"));";
+            string code = $@"string input =""{input}"";
+string userInput;
+string consoleOutput;
 
-            // Find the index of the opening curly brace '{' after the method declaration
-            int openingBraceIndex = code.IndexOf("Main") + 13;
+using (StringReader sr = new StringReader(input))
+{{
+    using (StringWriter sw = new StringWriter())
+    {{
+        Console.SetIn(sr);
 
-            // Insert the new line at the calculated index
-            string modifiedCode = code.Insert(openingBraceIndex, addLineToTest + "\n");
+        TextWriter originalOutput = Console.Out;
+        try
+        {{
+            Console.SetOut(sw);
+           
+            // here goes the student code
+            {studentCode}            
+            consoleOutput = sw.ToString();
+        }}
+        finally
+        {{
+            Console.SetOut(originalOutput);
+        }}
+    }}
+}}
 
-            string scriptCode = modifiedCode;
+return consoleOutput;";
 
+            string result = ExecuteCodeAsync(code).GetAwaiter().GetResult();
+            return result;
+        }
+
+
+
+     public static async Task<string> ExecuteCodeAsync(string code)
+        {
             try
             {
-                using (var consoleOutput = new StringWriter())
-                {
-                    var originalIn = Console.In;
-                    var originalOut = Console.Out;
-
-                    try
-                    {
-                        var inputReader = new StringReader(input);
-                        Console.SetIn(inputReader);
-                        Console.SetOut(consoleOutput);
-
-                        var scriptOptions = ScriptOptions.Default
-                            .AddReferences(typeof(Console).Assembly)
-                            .AddImports("System");
-
-                        var script = CSharpScript.Create(scriptCode, scriptOptions);
-                        script.RunAsync().Wait();
-
-                        string output = consoleOutput.ToString();
-
-                        return output;
-                    }
-                    finally
-                    {
-                        Console.SetIn(originalIn);
-                        Console.SetOut(originalOut);
-                    }
-                }
+                object result = await CSharpScript.EvaluateAsync(code, ScriptOptions.Default.WithImports("System", "System.IO", "System.Text"));
+                string resultString = result.ToString();
+               string TrimmedrResult = resultString.Replace("\r", "").Replace("\n", "").Replace(" ", "");
+                return TrimmedrResult;
             }
-            catch (Exception e)
+            catch(Exception ex)
             {
-                return e.Message;
+                return ex.Message; 
             }
         }
 
 
 
-
-
-
-
-
     }
+
 }
+

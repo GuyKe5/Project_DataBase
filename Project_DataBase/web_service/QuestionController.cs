@@ -13,6 +13,21 @@ namespace Project_DataBase.web_service
     [ApiController]
     public class QuestionController : ControllerBase
     {
+        //change status
+        [HttpPut("ChangeStatus")]
+        public IActionResult ChangeStatus([FromBody] JsonElement value)
+        {
+            try
+            {
+                string response = QuestionService.ChangeStatus(value);
+                if (response == "ok") { return Ok(); }
+                return StatusCode(500, new { error = response });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = "An unexpected error occurred. :(" + ex });
+            }
+        }
         [HttpPut("AddQuestion")]
         public IActionResult AddQuestion([FromBody] JsonElement value)
         {
