@@ -108,7 +108,7 @@ namespace Project_DataBase.BLL
             return true;
         }
 
-        public  static async Task<List<Test>> SubmitAndCheckCode(JsonElement value)
+        public static List<Test> SubmitAndCheckCode(JsonElement value)
         {
             dynamic obj = JsonNode.Parse(value.GetRawText());
             string code = (string)obj["code"];  // student code
@@ -134,7 +134,7 @@ namespace Project_DataBase.BLL
                 Test test = tests[i];
 
                 // Execute the test using the student's code
-                string result = await ExecuteTestWithConsoleReadLine(code, test.input);
+                string result = ExecuteTestWithConsoleReadLine(code, test.input);
 
                 test.status = (result == test.output) ? "V" : "X";
             }
@@ -142,54 +142,60 @@ namespace Project_DataBase.BLL
             return tests;
         }
 
-        public static async Task<string> ExecuteTestWithConsoleReadLine(string studentCode, string input)
+        public static string ExecuteTestWithConsoleReadLine(string studentCode, string input)
         {
-            string code = $@"string input =""{input}"";
+          
+
+
+
+
+            string code = @$"string input = ""{input}"";
 string userInput;
 string consoleOutput;
 
 using (StringReader sr = new StringReader(input))
 {{
-    using (StringWriter sw = new StringWriter())
-    {{
-        Console.SetIn(sr);
 
-        TextWriter originalOutput = Console.Out;
-        try
-        {{
-            Console.SetOut(sw);
-           
-            // here goes the student code
-            {studentCode}            
-            consoleOutput = sw.ToString();
-        }}
-        finally
-        {{
-            Console.SetOut(originalOutput);
-        }}
-    }}
-}}
+    Console.SetIn(sr);
+   
 
-return consoleOutput;";
+       {studentCode}
 
-            string result = await ExecuteCodeAsync(code);
+return output;
+
+
+    
+}}";
+
+
+            string result = ExecuteCodeAsync(code);
             return result;
         }
 
 
 
-     public static async Task<string> ExecuteCodeAsync(string code)
+        public static string ExecuteCodeAsync(string code)
         {
             try
             {
-                object result = await CSharpScript.EvaluateAsync(code, ScriptOptions.Default.WithImports("System", "System.IO", "System.Text"));
-                string resultString = result.ToString();
-               string TrimmedrResult = resultString.Replace("\r", "").Replace("\n", "").Replace(" ", "");
+
+                    var result = CSharpScript.EvaluateAsync(code, ScriptOptions.Default.WithImports("System", "System.IO", "System.Text"));
+
+                result.Wait();
+
+                string resultString = result.Result.ToString();
+
+                string TrimmedrResult = resultString.Replace("\r", "").Replace("\n", "").Replace(" ", "");
+               
                 return TrimmedrResult;
+
+
+
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                return ex.Message; 
+                
+                return ex.Message;
             }
         }
 
