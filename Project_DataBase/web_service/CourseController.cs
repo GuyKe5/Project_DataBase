@@ -71,7 +71,7 @@ namespace Project_DataBase.web_service
         {
             try
             {
-                return Ok(CourseService.GetQuestionsFromCourseIdBLL(courseId, userId));
+                return Ok(QuestionService.GetQuestionsFromCourseIdBLL(courseId, userId));
 
 
             }

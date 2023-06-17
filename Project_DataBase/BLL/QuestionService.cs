@@ -49,6 +49,23 @@ namespace Project_DataBase.BLL
             return q;
         }
 
+        public static List<Question> GetQuestionsFromCourseIdBLL(int courseId, int userId)
+        {
+            DataTable QuestionDT = CourseServiceDAL.GetQuestionsFromCourseIdDLL(courseId);
+            List<Question> QuestionList = Functions.MapDataTableToListOfClass<Question>(QuestionDT);
+            List<int> QuestionIds = new List<int>();
+            for (int i = 0; i < QuestionList.Count; i++)
+            {
+                QuestionIds.Add(QuestionList[i].id);
+            }
+
+            for (int i = 0; i < QuestionIds.Count; i++)
+            {
+                QuestionList[i].status = CourseServiceDAL.GetQuestionStatus(QuestionIds[i], userId);
+
+            }
+            return QuestionList;
+        }
         public static string AddQuestion(JsonElement value)
         {
             string name = value.GetProperty("questionname").GetString();
@@ -138,11 +155,7 @@ namespace Project_DataBase.BLL
                 string result = ExecuteTestWithConsoleReadLine(code, test.input);
 
                 test.status = (result == test.output) ? "V" : "X";
-                if (test.status == "X")
-                {
-                    int g = 3;
-                }
-            }
+                       }
 
             return tests;
         }

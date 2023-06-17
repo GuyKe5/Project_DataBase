@@ -1,1 +1,1 @@
-﻿insert into  QuestionStatus(question_id,user_id,status) values(3,1,'V')
+﻿DELETE FROM Courses WHERE id=41

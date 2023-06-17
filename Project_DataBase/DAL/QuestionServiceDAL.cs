@@ -34,7 +34,7 @@ namespace Project_DataBase.DAL
             }
             else
             {
-                query = $@"INSERT INTO Questions (name, description, writer, course_id,baseCode,solution)
+                query = $@"INSERT INTO Questions (name, prompt, writer, course_id,baseCode,solution)
                      OUTPUT INSERTED.id
  VALUES ('{name}', '{prompt}', '{writer}', '{courseId}','{baseCode}','{solution}')";
             }

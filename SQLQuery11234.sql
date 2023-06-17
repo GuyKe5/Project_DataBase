@@ -1,0 +1,1 @@
+﻿select * from Courses where id=1
