@@ -44,7 +44,7 @@ namespace Project_DataBase.BLL
         }
         public static FullQuestion GetFullQuestionFromQuestionIdBLL(int id)
         {
-            DataTable d = CourseServiceDAL.GetFullQuestionFromQuestionIdDLL(id);
+            DataTable d = QuestionServiceDAL.GetFullQuestionFromQuestionIdDLL(id);
             FullQuestion q = Functions.MapDataTableToClass<FullQuestion>(d);
             return q;
         }
@@ -52,13 +52,13 @@ namespace Project_DataBase.BLL
         public static string AddQuestion(JsonElement value)
         {
             string name = value.GetProperty("questionname").GetString();
-            string description = value.GetProperty("description").GetString();
+            string prompt = value.GetProperty("prompt").GetString();
             string baesCode = value.GetProperty("baseCode").GetString();
-            string solution = value.GetProperty("soulutionCode").GetString();
+            string solution = value.GetProperty("soulution").GetString();
             int writer = value.GetProperty("writerId").GetInt32();
             int courseId = value.GetProperty("courseId").GetInt32();
             int edit = value.GetProperty("edit").GetInt32();
-            int questionId = CourseServiceDAL.AddQuestionDLL(name, description, writer, courseId, baesCode, solution, edit);
+            int questionId = QuestionServiceDAL.AddQuestionDLL(name, prompt, writer, courseId, baesCode, solution, edit);
 
             if (questionId > 0)
             {
@@ -97,9 +97,10 @@ namespace Project_DataBase.BLL
 
         public static bool AddTests(List<Test> tests)
         {
+            QuestionServiceDAL.DeleteOldTests(tests[0].questionId);
             foreach (Test test in tests)
             {
-                int affected = CourseServiceDAL.AddTestDLL(test.name, test.input, test.output, test.questionId);
+                int affected = QuestionServiceDAL.AddTestDLL(test.name, test.input, test.output, test.questionId);
                 if (affected <= 0)
                 {
                     return false;
@@ -137,6 +138,10 @@ namespace Project_DataBase.BLL
                 string result = ExecuteTestWithConsoleReadLine(code, test.input);
 
                 test.status = (result == test.output) ? "V" : "X";
+                if (test.status == "X")
+                {
+                    int g = 3;
+                }
             }
 
             return tests;
@@ -144,7 +149,7 @@ namespace Project_DataBase.BLL
 
         public static string ExecuteTestWithConsoleReadLine(string studentCode, string input)
         {
-          
+
 
 
 
@@ -161,7 +166,7 @@ using (StringReader sr = new StringReader(input))
 
        {studentCode}
 
-return output;
+return output.ToString();
 
 
     
@@ -179,14 +184,13 @@ return output;
             try
             {
 
-                    var result = CSharpScript.EvaluateAsync(code, ScriptOptions.Default.WithImports("System", "System.IO", "System.Text"));
-
+                var result = CSharpScript.EvaluateAsync(code, ScriptOptions.Default.WithImports("System", "System.IO", "System.Text"));
                 result.Wait();
 
                 string resultString = result.Result.ToString();
 
                 string TrimmedrResult = resultString.Replace("\r", "").Replace("\n", "").Replace(" ", "");
-               
+              
                 return TrimmedrResult;
 
 
@@ -194,7 +198,7 @@ return output;
             }
             catch (Exception ex)
             {
-                
+
                 return ex.Message;
             }
         }
